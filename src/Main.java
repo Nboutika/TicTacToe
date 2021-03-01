@@ -1,6 +1,8 @@
 public class Main {
 
     public static void main(String[] args) {
-        new Window("First window");
+
+        new Window("TicTacToe");
+
     }
 }
