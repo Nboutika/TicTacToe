@@ -1,4 +1,5 @@
 import javax.swing.*;
+import javax.swing.plaf.nimbus.NimbusLookAndFeel;
 import java.awt.*;
 
 public class Window extends JFrame {
@@ -13,8 +14,14 @@ public class Window extends JFrame {
         setSize(450,400);
         setLocationRelativeTo(null);
         setLayout(new BorderLayout());
+        setResizable(false);
         mainPanel.setLayout(new GridLayout(3,3));
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        try {
+            UIManager.setLookAndFeel(new NimbusLookAndFeel());
+        } catch (UnsupportedLookAndFeelException e) {
+            e.printStackTrace();
+        }
 
         for (int i = 0; i < 3; i++) {
 
