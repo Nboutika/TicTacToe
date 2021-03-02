@@ -1,10 +1,14 @@
 import javax.swing.*;
+import javax.swing.plaf.basic.BasicLookAndFeel;
+import javax.swing.plaf.metal.MetalLookAndFeel;
 import javax.swing.plaf.nimbus.NimbusLookAndFeel;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 public class Window extends JFrame {
 
-    JButton[][] buttons = new JButton[3][3];
+    JButton[] buttons = new JButton[9];
     JPanel mainPanel = new JPanel();
     JLabel test;
 
@@ -17,19 +21,25 @@ public class Window extends JFrame {
         setResizable(false);
         mainPanel.setLayout(new GridLayout(3,3));
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        /*try {
+            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+        } catch (Exception e) {
+
+            }
+           */
         try {
             UIManager.setLookAndFeel(new NimbusLookAndFeel());
-        } catch (UnsupportedLookAndFeelException e) {
-            e.printStackTrace();
-        }
+        } catch (UnsupportedLookAndFeelException unsupportedLookAndFeelException) {
+            unsupportedLookAndFeelException.printStackTrace();
+           }
 
-        for (int i = 0; i < 3; i++) {
 
-            for (int j = 0; j < 3; j++) {
+        for (int i = 0; i < 9; i++) {
+                buttons[i] = new JButton("");
+                buttons[i].setFocusable(false);
+                buttons[i].addActionListener(this::actionPerformed);
+                mainPanel.add(buttons[i]);
 
-                buttons[i][j] = new JButton("");
-                mainPanel.add(buttons[i][j]);
-            }
 
         }
         add(mainPanel,BorderLayout.CENTER);
@@ -38,6 +48,19 @@ public class Window extends JFrame {
         add(test, BorderLayout.NORTH);
 
         setVisible(true);
+
+    }
+
+    private void actionPerformed(ActionEvent e){
+
+           JButton button = (JButton) e.getSource();
+
+           button.setForeground(new Color(69,73,85));
+           button.setBackground(new Color(114,176,29, 179));
+           button.setText("Test");
+
+
+
 
     }
 
