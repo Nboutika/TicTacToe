@@ -51,16 +51,7 @@ public class Window extends JFrame {
 
     }
 
-    private void actionPerformed(ActionEvent e){
-
-           JButton button = (JButton) e.getSource();
-
-           button.setForeground(new Color(69,73,85));
-           button.setBackground(new Color(114,176,29, 179));
-           button.setText("Test");
-
-
-
+    protected void actionPerformed(ActionEvent e){
 
     }
 
