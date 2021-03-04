@@ -66,7 +66,6 @@ public class TicTacToe extends Window  {
                 if (win()[0] == 1) {
                     int[] pos = new int[] {win()[1], win()[2], win()[3]};
                     mainText.setText("X won");
-                    mainText.setFont(new Font("duran", Font.PLAIN, 16));
 
                     state = false;
                     for (int i = 0; i < pos.length; i++) {
@@ -84,7 +83,6 @@ public class TicTacToe extends Window  {
                 if (win()[0] == 1) {
                     int[] pos = new int[] {win()[1], win()[2], win()[3]};
                     mainText.setText("O won");
-                    mainText.setFont(new Font("duran", Font.PLAIN, 16));
 
                     state = false;
                     for (int i = 0; i < pos.length; i++) {

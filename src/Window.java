@@ -11,6 +11,7 @@ public class Window extends JFrame {
     JButton[] buttons = new JButton[9];
     JPanel mainPanel = new JPanel();
     JLabel mainText;
+    JLabel component = new JLabel("Press r to restart");
     protected Font duran;
 
     public Window(String title) throws HeadlessException {
@@ -51,13 +52,15 @@ public class Window extends JFrame {
         add(mainPanel,BorderLayout.CENTER); // adding the mainPanel to the center of our window
 
         mainText = new JLabel("", SwingConstants.CENTER); // empty label for information
-        mainText.setFont(new Font("duran", Font.PLAIN, 16));
+        mainText.setFont(new Font("Arial", Font.BOLD, 16));
         mainText.setPreferredSize(new Dimension(0,25));
         mainText.setForeground(new Color(0, 158, 143));
         add(mainText, BorderLayout.NORTH);
-
+        component.setFont(new Font("Arial", Font.BOLD, 15));
         setVisible(true);
-        JOptionPane.showMessageDialog(this,"press R to restart");
+
+        JOptionPane.showMessageDialog(this,component,"restart a game",
+                JOptionPane.INFORMATION_MESSAGE);
 
 
 
