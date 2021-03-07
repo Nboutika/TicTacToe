@@ -1,3 +1,5 @@
+import org.w3c.dom.ls.LSOutput;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -133,8 +135,10 @@ public class TicTacToe extends Window  {
             int key = e.getKeyCode();
             if(key == KeyEvent.VK_R){
                 reset();
+
             }
     }
+
 
 
 
