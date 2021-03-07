@@ -2,7 +2,7 @@
 
 This is my first GUI project.
 
-Student in CS, actually learning java this will allow me to understand GUIs better.
+Student in CS, currently learning java this will allow me to understand GUIs better.
 
 **Goals :**
 
