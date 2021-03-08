@@ -11,9 +11,9 @@ public class TicTacToe extends Window  {
     private Player turn = Player.PLAYERX;
 
 
-
     public TicTacToe(String title) throws HeadlessException {
         super(title);
+
         mainText.setText(turn.getAbbreviation() + " Turns");
         this.setFocusable(true);
         this.addKeyListener(new KeyAdapter() {
@@ -58,47 +58,59 @@ public class TicTacToe extends Window  {
     @Override
     protected void actionPerformed(ActionEvent e) {
         JButton button = (JButton) e.getSource();
+
+
         if (state && draw != 9) {
             if (turn == Player.PLAYERX && button.getText().equals("")) {
                 button.setForeground(new Color(17, 19, 92, 255));
-                button.setText("X");
                 button.setFont(new Font("duran", Font.PLAIN, 36));
+                button.setText("X");
+
+
                 draw += 1;
+
                 if (win()[0] == 1) {
                     int[] pos = new int[] {win()[1], win()[2], win()[3]};
                     mainText.setText("X won");
                     state = false;
-                    for (int po : pos) {
+                    for (int po : pos)
                         buttons[po].setBackground(new Color(18, 222, 0, 171));
-                    }
-                    popupReset();
 
-                } else{
+                    popupReset();
+                }
+
+                else{
                     turn = Player.PLAYERO;
                     mainText.setText(turn.getAbbreviation() + " Turns");
+
                     if (draw == 9){
                         mainText.setText("DRAW");
                         popupReset();
                     }
-
                 }
-            } else if (turn == Player.PLAYERO && button.getText().equals("")) {
+
+            }else if (turn == Player.PLAYERO && button.getText().equals("")) {
                 button.setForeground(new Color(17, 19, 92, 255));
-                button.setText("O");
-                draw+= 1;
                 button.setFont(new Font("duran", Font.PLAIN, 36));
+                button.setText("O");
+
+                draw+= 1;
+
                 if (win()[0] == 1) {
                     int[] pos = new int[] {win()[1], win()[2], win()[3]};
+
                     mainText.setText("O won");
                     state = false;
-                    for (int po : pos) {
-                        buttons[po].setBackground(new Color(18, 222, 0, 171));
-                    }
-                    popupReset();
 
-                } else {
+                    for (int po : pos)
+                        buttons[po].setBackground(new Color(18, 222, 0, 171));
+
+                    popupReset();
+                }
+                else {
                     turn = Player.PLAYERX;
                     mainText.setText(turn.getAbbreviation() + " Turns");
+
                     if (draw == 9){
                         mainText.setText("DRAW");
                         popupReset();
@@ -106,7 +118,6 @@ public class TicTacToe extends Window  {
                 }
             }
         }
-
     }
 
     private void popupReset(){
@@ -124,15 +135,16 @@ public class TicTacToe extends Window  {
         }
         turn = Player.PLAYERX;
         mainText.setText(turn.getAbbreviation() + " Turns");
+
         draw = 0;
         state = true;
     }
 
     private void keyHandler(KeyEvent e){
             int key = e.getKeyCode();
+
             if(key == KeyEvent.VK_R){
                 reset();
-
             }
     }
 
