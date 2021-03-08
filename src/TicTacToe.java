@@ -1,11 +1,8 @@
-import org.w3c.dom.ls.LSOutput;
-
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
-import java.security.Key;
 
 public class TicTacToe extends Window  {
 
@@ -32,29 +29,29 @@ public class TicTacToe extends Window  {
 
 
     public int[] win(){
-        if(buttons[0].getText() == buttons[1].getText() && buttons[2].getText() == buttons[0].getText()
-                && buttons[0].getText() != "" )
+        if(buttons[0].getText().equals(buttons[1].getText()) && buttons[2].getText().equals(buttons[0].getText())
+                && !buttons[0].getText().equals(""))
             return new int[]{1,0,1,2};
-        else if(buttons[3].getText() == buttons[4].getText() && buttons[5].getText() == buttons[3].getText() &&
-                buttons[3].getText() != "")
+        else if(buttons[3].getText().equals(buttons[4].getText()) && buttons[5].getText().equals(buttons[3].getText()) &&
+                !buttons[3].getText().equals(""))
             return new int[]{1,3,4,5};
-        else if(buttons[6].getText() == buttons[7].getText() && buttons[8].getText() == buttons[6].getText() &&
-                buttons[6].getText() != "")
+        else if(buttons[6].getText().equals(buttons[7].getText()) && buttons[8].getText().equals(buttons[6].getText()) &&
+                !buttons[6].getText().equals(""))
             return new int[]{1,6,7,8};
-        else if(buttons[0].getText() == buttons[3].getText() && buttons[6].getText() == buttons[0].getText() &&
-                buttons[0].getText() != "")
+        else if(buttons[0].getText().equals(buttons[3].getText()) && buttons[6].getText().equals(buttons[0].getText()) &&
+                !buttons[0].getText().equals(""))
             return new int[]{1,0,3,6};
-        else if(buttons[1].getText() == buttons[4].getText() && buttons[7].getText() == buttons[1].getText() &&
-                buttons[1].getText() != "")
+        else if(buttons[1].getText().equals(buttons[4].getText()) && buttons[7].getText().equals(buttons[1].getText()) &&
+                !buttons[1].getText().equals(""))
             return new int[]{1,1,4,7};
-        else if(buttons[2].getText() == buttons[5].getText() && buttons[8].getText() == buttons[2].getText() &&
-                buttons[2].getText() != "")
+        else if(buttons[2].getText().equals(buttons[5].getText()) && buttons[8].getText().equals(buttons[2].getText()) &&
+                !buttons[2].getText().equals(""))
             return new int[]{1,2,5,8};
-        else if(buttons[0].getText() == buttons[4].getText() && buttons[8].getText() == buttons[0].getText() &&
-                buttons[0].getText() != "")
+        else if(buttons[0].getText().equals(buttons[4].getText()) && buttons[8].getText().equals(buttons[0].getText()) &&
+                !buttons[0].getText().equals(""))
             return new int[]{1,0,4,8};
-        else if(buttons[2].getText() == buttons[4].getText() && buttons[6].getText() == buttons[2].getText() &&
-                buttons[2].getText() != "")
+        else if(buttons[2].getText().equals(buttons[4].getText()) && buttons[6].getText().equals(buttons[2].getText()) &&
+                !buttons[2].getText().equals(""))
             return new int[]{1,2,4,6};
         return new int[] {0};
     }
@@ -62,7 +59,7 @@ public class TicTacToe extends Window  {
     protected void actionPerformed(ActionEvent e) {
         JButton button = (JButton) e.getSource();
         if (state && draw != 9) {
-            if (turn == Player.PLAYERX && button.getText() == "") {
+            if (turn == Player.PLAYERX && button.getText().equals("")) {
                 button.setForeground(new Color(17, 19, 92, 255));
                 button.setText("X");
                 button.setFont(new Font("duran", Font.PLAIN, 36));
@@ -71,8 +68,8 @@ public class TicTacToe extends Window  {
                     int[] pos = new int[] {win()[1], win()[2], win()[3]};
                     mainText.setText("X won");
                     state = false;
-                    for (int i = 0; i < pos.length; i++) {
-                        buttons[pos[i]].setBackground(new Color(18, 222, 0, 171));
+                    for (int po : pos) {
+                        buttons[po].setBackground(new Color(18, 222, 0, 171));
                     }
                     popupReset();
 
@@ -85,7 +82,7 @@ public class TicTacToe extends Window  {
                     }
 
                 }
-            } else if (turn == Player.PLAYERO && button.getText() == "") {
+            } else if (turn == Player.PLAYERO && button.getText().equals("")) {
                 button.setForeground(new Color(17, 19, 92, 255));
                 button.setText("O");
                 draw+= 1;
@@ -94,8 +91,8 @@ public class TicTacToe extends Window  {
                     int[] pos = new int[] {win()[1], win()[2], win()[3]};
                     mainText.setText("O won");
                     state = false;
-                    for (int i = 0; i < pos.length; i++) {
-                        buttons[pos[i]].setBackground(new Color(18, 222, 0, 171));
+                    for (int po : pos) {
+                        buttons[po].setBackground(new Color(18, 222, 0, 171));
                     }
                     popupReset();
 
