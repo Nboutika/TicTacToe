@@ -8,7 +8,8 @@ public class TicTacToe extends Window {
 
     private boolean state = true; // state of the game
     private Player turn = Player.AI;
-    private int nb; // testing var don't consider it
+    private AI ai = new AI(this);
+
 
 
     public TicTacToe(String title) throws HeadlessException {
@@ -27,7 +28,7 @@ public class TicTacToe extends Window {
         });
         // first move of the AI
         if (turn == Player.AI)
-            aiMove();
+            ai.aiMove();
 
     }
 
@@ -65,6 +66,22 @@ public class TicTacToe extends Window {
         return new int[]{0};
     }
 
+    public void setState(boolean state) {
+        this.state = state;
+    }
+
+    public void setTurn(Player turn) {
+        this.turn = turn;
+    }
+
+    public boolean isState() {
+        return state;
+    }
+
+    public Player getTurn() {
+        return turn;
+    }
+
     @Override
     protected void actionPerformed(ActionEvent e) {
         JButton button = (JButton) e.getSource();
@@ -94,7 +111,7 @@ public class TicTacToe extends Window {
                 // otherwise we go onto the next player after checking the tie
                 else {
                     if (tie()) {
-                        mainText.setText("DRAW");
+                        mainText.setText("TIE");
                         popupReset();
                         state = false;
 
@@ -126,17 +143,14 @@ public class TicTacToe extends Window {
                     popupReset();
                 } else {
                     if (tie()) {
-                        mainText.setText("DRAW");
+                        mainText.setText("TIE");
                         popupReset();
                         state = false;}
 
                     // here we use the AI so it's AI turn
                     turn = Player.AI;
                     mainText.setText(turn.getAbbreviation() + " Turns");
-                    aiMove();
-
-
-
+                    ai.aiMove();
                 }
             }
         }
@@ -144,7 +158,7 @@ public class TicTacToe extends Window {
 
 
     // simple popup after the game ended to ask if we want to restart or not
-    private void popupReset() {
+    public void popupReset() {
         int dialogButton = JOptionPane.YES_NO_OPTION;
         int dialogResult = JOptionPane.showConfirmDialog(null,
                 "Restart?", "END OF GAME", dialogButton);
@@ -170,7 +184,7 @@ public class TicTacToe extends Window {
         reset();
         turn = Player.AI;
         mainText.setText(turn.getAbbreviation() + " Turns");
-        aiMove();
+        ai.aiMove();
     }
 
 
@@ -185,7 +199,7 @@ public class TicTacToe extends Window {
 
 
     // boolean checking tie
-    private boolean tie(){
+    public boolean tie(){
         int emptyCase = 0;
         if (win()[0] == 0) {
             for (int i = 0; i < 9; i++) {
@@ -199,124 +213,13 @@ public class TicTacToe extends Window {
 
 
 
-    // Value of minimax (10 if win, 0 for tie and -10 if lose)
-    private int aiValue() {
-        if (win()[0] == 1 && turn == Player.AI)
-            return 10;
-        else if (win()[0] == 1 && turn == Player.PLAYERO)
-            return -10;
-        else if (tie())
-            return 0;
-
-        return -1;
-    }
-
-
-
-    private void aiMove() {
-
-        int bestScore = Integer.MIN_VALUE;
-        int bestMove = 0;
-
-        // going through all of the buttons
-        for (int i = 0; i < 9; i++) {
-
-
-            // if the button is empty
-            if (buttons[i].getText().equals("")) {
-                // setText to current player's turn so here "X"
-                buttons[i].setText(turn.getAbbreviation());
-                // go to the next player
-                turn = Player.PLAYERO;
-                // looking for minimax return
-                int score = minimax(0, false);
-                turn = Player.AI;
-                // cancelling the previous move to make an empty board
-                buttons[i].setText("");
-                // for each move checking if it's better
-                if (score > bestScore) {
-                    bestScore = score;
-                    bestMove = i;
-                }
-            }
-        }
-        // making the bestMove found
-        buttons[bestMove].setText(Player.AI.getAbbreviation());
-        // checking for the win
-        if (win()[0] == 1) {
-            int[] pos = new int[]{win()[1], win()[2], win()[3]};
-            mainText.setText("AI won");
-            state = false;
-            for (int po : pos)
-                buttons[po].setBackground(new Color(18, 222, 0, 171));
-            popupReset();
-        } else {
-            // checking the tie, if false then continue the game
-            if (tie()){
-                mainText.setText("Tie");
-                popupReset();
-            }
-            turn = Player.PLAYERO;
-            mainText.setText(turn.getAbbreviation() + " Turns");
-
-        }
-    }
-
-    private int minimax(int depth, boolean maximizingPlayer) {
-
-
-        // Condition to stop the recursion (if someone won or if it's tie
-        if (win()[0] == 1 || tie()) {
-            if (aiValue() == 10) {
-                nb += 1;
-                System.out.println(nb);
-            }
-            return aiValue();
-        }
 
 
 
 
-        // maximizing player, here we just use the minimax algorithm
-        if (maximizingPlayer) {
-            int maxScore = Integer.MIN_VALUE;
-            for (int i = 0; i < 9; i++) {
-
-                if (buttons[i].getText().equals("")) {
-                    turn = Player.AI;
-                    buttons[i].setText(Player.AI.getAbbreviation());
-
-                    int score = minimax(depth + 1, false);
-                    buttons[i].setText("");
-                    maxScore = Math.max(maxScore, score);
-
-                }
-
-            }
-            return maxScore;
-
-        }
-        // minimizing player
-        else {
-            int minScore = Integer.MAX_VALUE;
-            for (int i = 0; i < 9; i++) {
 
 
-                if (buttons[i].getText().equals("")) {
-                    turn = Player.PLAYERO;
-                    buttons[i].setText(Player.PLAYERO.getAbbreviation());
 
-                    int score = minimax(depth + 1, true);
-                    buttons[i].setText("");
-
-
-                    minScore = Math.min(minScore, score);
-
-                }
-            }
-            return minScore;
-        }
-    }
 }
 
 
