@@ -41,6 +41,7 @@ public class Window extends JFrame {
         // creating buttons
         for (int i = 0; i < 9; i++) {
                 buttons[i] = new JButton("");
+            buttons[i].setFont(new Font("duran", Font.PLAIN, 36));
                 buttons[i].setFocusable(false); // making sure they can't be focused (like with tab)
                 buttons[i].addActionListener(this::actionPerformed); // adding an action listener for when we press it
                 mainPanel.add(buttons[i]); // adding buttons to our mainPanel 3 by 3 grid

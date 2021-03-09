@@ -1,6 +1,7 @@
 public enum Player {
     PLAYERX("X"),
-    PLAYERO("O");
+    PLAYERO("O"),
+    AI("X");
 
     private String abbreviation;
 
