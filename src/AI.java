@@ -36,8 +36,6 @@ public class AI {
             if (game.buttons[i].getText().equals("")) {
                 // setText to current player's turn so here "X"
                 game.buttons[i].setText(game.getTurn().getAbbreviation());
-                // go to the next player
-                game.setTurn(Player.PLAYERO);
                 // looking for minimax return
                 int score = minimax(0, false);
                 game.setTurn(Player.AI);
