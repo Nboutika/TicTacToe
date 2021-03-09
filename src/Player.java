@@ -1,7 +1,7 @@
 public enum Player {
     PLAYERX("X"),
     PLAYERO("O"),
-    AI("X");
+    AI("O");
 
     private String abbreviation;
 
@@ -13,4 +13,7 @@ public enum Player {
         return this.abbreviation;
     }
 
+    public void setAbbreviation(String abbreviation) {
+        this.abbreviation = abbreviation;
+    }
 }

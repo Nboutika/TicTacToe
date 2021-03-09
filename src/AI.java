@@ -2,19 +2,23 @@ import java.awt.*;
 
 public class AI {
     private TicTacToe game;
-    private int nb; // testing var don't consider it
+    private Player opponent;
 
 
 
     public AI(TicTacToe game){
         this.game = game;
+        if (game.getPlayerChar().equals("X"))
+            opponent = Player.PLAYERX;
+        else
+            opponent = Player.PLAYERO;
     }
 
     // Value of minimax (10 if win, 0 for tie and -10 if lose)
     private int aiValue() {
         if (game.win()[0] == 1 && game.getTurn() == Player.AI)
             return 10;
-        else if (game.win()[0] == 1 && game.getTurn() == Player.PLAYERO)
+        else if (game.win()[0] == 1 && game.getTurn() == opponent)
             return -10;
         else if (game.tie())
             return 0;
@@ -36,6 +40,7 @@ public class AI {
             if (game.buttons[i].getText().equals("")) {
                 // setText to current player's turn so here "X"
                 game.buttons[i].setText(game.getTurn().getAbbreviation());
+                // go to the next player
                 // looking for minimax return
                 int score = minimax(0, false);
                 game.setTurn(Player.AI);
@@ -59,14 +64,16 @@ public class AI {
             for (int po : pos)
                 game.buttons[po].setBackground(new Color(18, 222, 0, 171));
             game.popupReset();
-        } else {
+        } else{
             // checking the tie, if false then continue the game
             if (game.tie()){
-                game.mainText.setText("Tie");
+                game.mainText.setText("TIE");
+                game.setState(false);
                 game.popupReset();
+            }else {
+                game.setTurn(opponent);
+                game.mainText.setText(game.getTurn().getAbbreviation() + " Turns");
             }
-            game.setTurn(Player.PLAYERO);
-            game.mainText.setText(game.getTurn().getAbbreviation() + " Turns");
 
         }
     }
@@ -76,10 +83,6 @@ public class AI {
 
         // Condition to stop the recursion (if someone won or if it's tie
         if (game.win()[0] == 1 || game.tie()) {
-            if (aiValue() == 10) {
-                nb += 1;
-                System.out.println(nb);
-            }
             return aiValue();
         }
 
@@ -99,7 +102,7 @@ public class AI {
                 if (game.buttons[i].getText().equals("")) {
                     // if so we set the turn to AI's turn and set this button to AI's value
                     game.setTurn(Player.AI);
-                    game.buttons[i].setText(Player.AI.getAbbreviation());
+                    game.buttons[i].setText(game.getTurn().getAbbreviation());
 
                     // then we make a recursive call to minimax
                     int score = minimax(depth + 1, false);
@@ -122,8 +125,8 @@ public class AI {
 
 
                 if (game.buttons[i].getText().equals("")) {
-                    game.setTurn(Player.PLAYERO);
-                    game.buttons[i].setText(Player.PLAYERO.getAbbreviation());
+                    game.setTurn(opponent);
+                    game.buttons[i].setText(game.getTurn().getAbbreviation());
 
                     int score = minimax(depth + 1, true);
                     game.buttons[i].setText("");

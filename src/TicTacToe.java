@@ -7,13 +7,26 @@ import java.awt.event.KeyEvent;
 public class TicTacToe extends Window {
 
     private boolean state = true; // state of the game
-    private Player turn = Player.AI;
-    private AI ai = new AI(this);
+    private String playerChar;
+    private Player turn = Player.PLAYERX;
+    private boolean aiState = true;
+    private AI ai;
 
 
+    public String getPlayerChar() {
+        return playerChar;
+    }
 
     public TicTacToe(String title) throws HeadlessException {
         super(title);
+
+        playerChoice();
+        if (playerChar.equals("X"))
+            Player.AI.setAbbreviation("O");
+        else {
+            Player.AI.setAbbreviation("X");
+            turn = Player.AI;
+        }
 
 
         mainText.setText(turn.getAbbreviation() + " Turns");
@@ -26,6 +39,8 @@ public class TicTacToe extends Window {
                 keyHandler(e);
             }
         });
+
+         ai = new AI(this);
         // first move of the AI
         if (turn == Player.AI)
             ai.aiMove();
@@ -112,13 +127,16 @@ public class TicTacToe extends Window {
                 else {
                     if (tie()) {
                         mainText.setText("TIE");
-                        popupReset();
                         state = false;
+                        popupReset();
+                    }else {
 
-                    turn = Player.PLAYERO;
-                    mainText.setText(turn.getAbbreviation() + " Turns");
-
-
+                        if (aiState)
+                            turn = Player.AI;
+                        else
+                            turn = Player.PLAYERO;
+                        mainText.setText(turn.getAbbreviation() + " Turns");
+                        ai.aiMove();
                     }
                 }
 
@@ -148,7 +166,10 @@ public class TicTacToe extends Window {
                         state = false;}
 
                     // here we use the AI so it's AI turn
-                    turn = Player.AI;
+                    if (aiState)
+                        turn = Player.AI;
+                    else
+                        turn = Player.PLAYERX;
                     mainText.setText(turn.getAbbreviation() + " Turns");
                     ai.aiMove();
                 }
@@ -157,13 +178,27 @@ public class TicTacToe extends Window {
     }
 
 
+
     // simple popup after the game ended to ask if we want to restart or not
     public void popupReset() {
         int dialogButton = JOptionPane.YES_NO_OPTION;
         int dialogResult = JOptionPane.showConfirmDialog(null,
                 "Restart?", "END OF GAME", dialogButton);
         if (dialogResult == JOptionPane.YES_OPTION)
-            resetAI();
+            reset();
+    }
+    // simple popup after the game ended to ask if we want to restart or not
+    public void playerChoice() {
+        String[] options = new String[2];
+        options[0] = "X";
+        options[1] = "O";
+        int answer = JOptionPane.showOptionDialog(null,
+                "Do you want to be X or O ", "Player choice", JOptionPane.YES_NO_OPTION, JOptionPane.INFORMATION_MESSAGE,
+                null, options, null);
+        if (answer == JOptionPane.YES_OPTION)
+            playerChar = "X";
+        else
+            playerChar = "O";
     }
 
 
@@ -173,18 +208,18 @@ public class TicTacToe extends Window {
             buttons[i].setText("");
             buttons[i].setBackground(null);
         }
-        turn = Player.PLAYERX;
-        mainText.setText(turn.getAbbreviation() + " Turns");
+        if (aiState){
+            if (playerChar.equals("X"))
+                turn = Player.PLAYERX;
+            else
+                turn = Player.AI;
+        }else
+            turn = Player.PLAYERX;
 
+        mainText.setText(turn.getAbbreviation() + " Turns");
         state = true;
-    }
-
-    //reset the board with the AI implementation
-    private void resetAI(){
-        reset();
-        turn = Player.AI;
-        mainText.setText(turn.getAbbreviation() + " Turns");
-        ai.aiMove();
+        if (turn == Player.AI)
+            ai.aiMove();
     }
 
 
@@ -193,7 +228,7 @@ public class TicTacToe extends Window {
         int key = e.getKeyCode();
 
         if (key == KeyEvent.VK_R) {
-            resetAI();
+            reset();
         }
     }
 
