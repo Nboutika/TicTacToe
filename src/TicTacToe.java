@@ -17,46 +17,28 @@ public class TicTacToe extends Window {
         return playerChar;
     }
 
+
+    /** Create a working TicTacToe game*/
     public TicTacToe(String title) throws HeadlessException {
         super(title);
 
-
-        if (aiState) {
-            playerChoice();
-            if (playerChar.equals("X"))
-                Player.AI.setAbbreviation("O");
-            else {
-                Player.AI.setAbbreviation("X");
-                turn = Player.AI;
-            }
-            ai = new AI(this);
-        }
-
-
         mainText.setText(turn.getAbbreviation() + " Turns");
+
+        // this is needed for the keyEvent
         this.setFocusable(true);
 
-        // KeyListener for restart with "R"
         this.addKeyListener(new KeyAdapter() {
             @Override
             public void keyPressed(KeyEvent e) {
                 keyHandler(e);
             }
         });
-
-
-        // first move of the AI
-        if (turn == Player.AI)
-            ai.aiMove();
-
     }
 
 
 
-    // Method to know if someone won
-    // making an array to know which combination won (index from 1 to 3)
-    // The index 0 shows us if it's won or not (0 or 1)
-    // we compare the text to know if it's equal and we are checking if it's different from blank
+   /** Checking if someone won. The first index return 1 or 0 to check the win and then the next 3
+    * values are the winning combination  */
     public int[] win() {
         if (buttons[0].getText().equals(buttons[1].getText()) && buttons[2].getText().equals(buttons[0].getText())
                 && !buttons[0].getText().equals(""))
@@ -85,30 +67,37 @@ public class TicTacToe extends Window {
         return new int[]{0};
     }
 
+    /** Set the state of the game*/
     public void setState(boolean state) {
         this.state = state;
     }
 
+    /** Set the turn to a Player*/
     public void setTurn(Player turn) {
         this.turn = turn;
     }
 
+    /** Returns the state of the game*/
     public boolean isState() {
         return state;
     }
+
+    /** Returns Player's turn*/
 
     public Player getTurn() {
         return turn;
     }
 
+
+    /** Actions to do when the button is pressed */
     @Override
     protected void actionPerformed(ActionEvent e) {
         JButton button = (JButton) e.getSource();
 
 
-        // if the game is still running
+        // while the game is running
         if (state) {
-                // playerX playing on an empty button
+                // if playerX played  an empty button then make the move
             if (turn == Player.PLAYERX && button.getText().equals("")) {
                 button.setForeground(new Color(17, 19, 92, 255));
                 button.setFont(new Font("duran", Font.PLAIN, 36));
@@ -116,7 +105,7 @@ public class TicTacToe extends Window {
 
 
 
-                // checking if the player won
+                // checking if X won
                 if (win()[0] == 1) {
                     int[] pos = new int[]{win()[1], win()[2], win()[3]};
                     mainText.setText("X won");
@@ -134,7 +123,7 @@ public class TicTacToe extends Window {
                         state = false;
                         popupReset();
                     }else {
-
+                        // if we play against the AI
                         if (aiState) {
                             turn = Player.AI;
                             ai.aiMove();
@@ -187,22 +176,26 @@ public class TicTacToe extends Window {
 
 
 
-    // simple popup after the game ended to ask if we want to restart or not
+    /** Popup that ask for restarting the game*/
     public void popupReset() {
         int dialogButton = JOptionPane.YES_NO_OPTION;
-        int dialogResult = JOptionPane.showConfirmDialog(null,
+        int dialogResult = JOptionPane.showConfirmDialog(this,
                 "Restart?", "END OF GAME", dialogButton);
         if (dialogResult == JOptionPane.YES_OPTION)
             reset();
     }
-    // simple popup after the game ended to ask if we want to restart or not
+    /** Popup that ask if the player wants to play "X" or "O" */
     public void playerChoice() {
         String[] options = new String[2];
         options[0] = "X";
         options[1] = "O";
-        int answer = JOptionPane.showOptionDialog(null,
-                "Do you want to be X or O ", "Player choice", JOptionPane.YES_NO_OPTION, JOptionPane.INFORMATION_MESSAGE,
-                null, options, null);
+        int answer = JOptionPane.showOptionDialog(this,
+                "Do you want to be X or O ",
+                "Player", JOptionPane.YES_NO_OPTION,
+                JOptionPane.INFORMATION_MESSAGE, null,
+                options, null);
+
+
         if (answer == JOptionPane.YES_OPTION)
             playerChar = "X";
         else
@@ -210,12 +203,15 @@ public class TicTacToe extends Window {
     }
 
 
-    // reset the board
+    /** Restart the game*/
     private void reset() {
+
+        // reset the buttons
         for (int i = 0; i < 9; i++) {
             buttons[i].setText("");
             buttons[i].setBackground(null);
         }
+        // If the AI is playing, set his turn corresponding to the player's char
         if (aiState){
             if (playerChar.equals("X"))
                 turn = Player.PLAYERX;
@@ -224,20 +220,23 @@ public class TicTacToe extends Window {
         }else
             turn = Player.PLAYERX;
 
-        mainText.setText(turn.getAbbreviation() + " Turns");
         state = true;
+        mainText.setText(turn.getAbbreviation() + " Turns");
+
         if (turn == Player.AI)
             ai.aiMove();
     }
 
 
-    // keyHandler to restart with "R" button of keyboard
+    /** Handle the keyboard input, currently supporting "R" to restart and "A" to toggle the AI*/
     private void keyHandler(KeyEvent e) {
         int key = e.getKeyCode();
 
         if (key == KeyEvent.VK_R) {
             reset();
         }
+
+        // Toggle AI
         if(key == KeyEvent.VK_A)
             aiState = !aiState;
         if (aiState) {
@@ -254,7 +253,7 @@ public class TicTacToe extends Window {
     }
 
 
-    // boolean checking tie
+    /** retuning if it's tie or not*/
     public boolean tie(){
         int emptyCase = 0;
         if (win()[0] == 0) {

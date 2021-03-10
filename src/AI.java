@@ -6,6 +6,7 @@ public class AI {
 
 
 
+    /** Create an AI for a TicTacToe game with the player's char as opponent*/
     public AI(TicTacToe game){
         this.game = game;
         if (game.getPlayerChar().equals("X"))
@@ -14,7 +15,7 @@ public class AI {
             opponent = Player.PLAYERO;
     }
 
-    // Value of minimax (10 if win, 0 for tie and -10 if lose)
+    /** Returns the value for minimax (10 for winning, -10 for losing, 0 for tie)*/
     private int aiValue() {
         if (game.win()[0] == 1 && game.getTurn() == Player.AI)
             return 10;
@@ -27,6 +28,7 @@ public class AI {
     }
 
 
+    /** Makes the Ai move using minimax algorithm (need to be AI's turn)*/
     public void aiMove() {
 
         int bestScore = Integer.MIN_VALUE;
@@ -38,15 +40,15 @@ public class AI {
 
             // if the button is empty
             if (game.buttons[i].getText().equals("")) {
-                // setText to current player's turn so here "X"
+                // Make the move
                 game.buttons[i].setText(game.getTurn().getAbbreviation());
-                // go to the next player
-                // looking for minimax return
                 int score = minimax(0, false);
                 game.setTurn(Player.AI);
+
                 // cancelling the previous move to make an empty board
                 game.buttons[i].setText("");
-                // for each move checking if it's better
+
+                // for each move checking if it's the best move
                 if (score > bestScore) {
                     bestScore = score;
                     bestMove = i;
@@ -55,29 +57,35 @@ public class AI {
         }
         // making the bestMove found
         game.buttons[bestMove].setText(Player.AI.getAbbreviation());
+
         // checking for the win
         if (game.win()[0] == 1) {
             int[] pos = new int[]{game.win()[1], game.win()[2], game.win()[3]};
+
             game.mainText.setText("AI won");
             game.setState(false);
+
             // setting the wining combination to green
             for (int po : pos)
                 game.buttons[po].setBackground(new Color(18, 222, 0, 171));
             game.popupReset();
-        } else{
+        }
+        else{
             // checking the tie, if false then continue the game
             if (game.tie()){
                 game.mainText.setText("TIE");
                 game.setState(false);
                 game.popupReset();
-            }else {
+            }
+            else {
                 game.setTurn(opponent);
                 game.mainText.setText(game.getTurn().getAbbreviation() + " Turns");
             }
-
         }
     }
 
+
+    /** minimax algorithm*/
     private int minimax(int depth, boolean maximizingPlayer) {
 
 

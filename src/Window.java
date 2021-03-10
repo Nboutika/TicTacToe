@@ -6,6 +6,8 @@ import java.awt.event.ActionEvent;
 import java.io.File;
 import java.io.IOException;
 
+
+/**  Constructor to make a TicTacToe window with Nimbus style*/
 public class Window extends JFrame {
 
     JButton[] buttons = new JButton[9];
@@ -67,7 +69,9 @@ public class Window extends JFrame {
     }
 
 
-    protected void font(){
+
+    /** Creating duran font*/
+    protected void duranFont(){
         // creating new font
         try {
             duran = Font.createFont(Font.TRUETYPE_FONT, new File("FontsFree-Net-Duran-Light.ttf"));
@@ -79,6 +83,8 @@ public class Window extends JFrame {
 
         }
     }
+
+    /** Action to do when a button is pressed */
     protected void actionPerformed(ActionEvent e){
 
     }
