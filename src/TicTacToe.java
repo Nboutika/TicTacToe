@@ -130,7 +130,8 @@ public class TicTacToe extends Window {
                         }
                         else
                             turn = Player.PLAYERO;
-                        mainText.setText(turn.getAbbreviation() + " Turns");
+                        if (state)
+                            mainText.setText(turn.getAbbreviation() + " Turns");
 
                     }
                 }
@@ -158,17 +159,17 @@ public class TicTacToe extends Window {
                     if (tie()) {
                         mainText.setText("TIE");
                         popupReset();
-                        state = false;}
-
-                    // here we use the AI so it's AI turn
-                    if (aiState) {
-                        turn = Player.AI;
-                        ai.aiMove();
+                        state = false;
                     }
-                    else
-                        turn = Player.PLAYERX;
-                    mainText.setText(turn.getAbbreviation() + " Turns");
 
+                        // here we use the AI so it's AI turn
+                        if (aiState) {
+                            turn = Player.AI;
+                            ai.aiMove();
+                        } else
+                            turn = Player.PLAYERX;
+                        if (state)
+                            mainText.setText(turn.getAbbreviation() + " Turns");
                 }
             }
         }
@@ -237,21 +238,21 @@ public class TicTacToe extends Window {
         }
 
         // Toggle AI
-        if(key == KeyEvent.VK_A)
+        if(key == KeyEvent.VK_A) {
             aiState = !aiState;
-        if (aiState) {
-            playerChoice();
-            if (playerChar.equals("X"))
-                Player.AI.setAbbreviation("O");
-            else {
-                Player.AI.setAbbreviation("X");
-                turn = Player.AI;
+            if (aiState) {
+                playerChoice();
+                if (playerChar.equals("X"))
+                    Player.AI.setAbbreviation("O");
+                else {
+                    Player.AI.setAbbreviation("X");
+                    turn = Player.AI;
+                }
+                ai = new AI(this);
             }
-            ai = new AI(this);
+            reset();
         }
-        reset();
     }
-
 
     /** retuning if it's tie or not*/
     public boolean tie(){
