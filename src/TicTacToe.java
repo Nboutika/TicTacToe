@@ -9,7 +9,7 @@ public class TicTacToe extends Window {
     private boolean state = true; // state of the game
     private String playerChar;
     private Player turn = Player.PLAYERX;
-    private boolean aiState = true;
+    private boolean aiState = false;
     private AI ai;
 
 
@@ -20,12 +20,16 @@ public class TicTacToe extends Window {
     public TicTacToe(String title) throws HeadlessException {
         super(title);
 
-        playerChoice();
-        if (playerChar.equals("X"))
-            Player.AI.setAbbreviation("O");
-        else {
-            Player.AI.setAbbreviation("X");
-            turn = Player.AI;
+
+        if (aiState) {
+            playerChoice();
+            if (playerChar.equals("X"))
+                Player.AI.setAbbreviation("O");
+            else {
+                Player.AI.setAbbreviation("X");
+                turn = Player.AI;
+            }
+            ai = new AI(this);
         }
 
 
@@ -40,7 +44,7 @@ public class TicTacToe extends Window {
             }
         });
 
-         ai = new AI(this);
+
         // first move of the AI
         if (turn == Player.AI)
             ai.aiMove();
@@ -131,12 +135,14 @@ public class TicTacToe extends Window {
                         popupReset();
                     }else {
 
-                        if (aiState)
+                        if (aiState) {
                             turn = Player.AI;
+                            ai.aiMove();
+                        }
                         else
                             turn = Player.PLAYERO;
                         mainText.setText(turn.getAbbreviation() + " Turns");
-                        ai.aiMove();
+
                     }
                 }
 
@@ -166,12 +172,14 @@ public class TicTacToe extends Window {
                         state = false;}
 
                     // here we use the AI so it's AI turn
-                    if (aiState)
+                    if (aiState) {
                         turn = Player.AI;
+                        ai.aiMove();
+                    }
                     else
                         turn = Player.PLAYERX;
                     mainText.setText(turn.getAbbreviation() + " Turns");
-                    ai.aiMove();
+
                 }
             }
         }
@@ -230,6 +238,19 @@ public class TicTacToe extends Window {
         if (key == KeyEvent.VK_R) {
             reset();
         }
+        if(key == KeyEvent.VK_A)
+            aiState = !aiState;
+        if (aiState) {
+            playerChoice();
+            if (playerChar.equals("X"))
+                Player.AI.setAbbreviation("O");
+            else {
+                Player.AI.setAbbreviation("X");
+                turn = Player.AI;
+            }
+            ai = new AI(this);
+        }
+        reset();
     }
 
 
