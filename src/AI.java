@@ -1,4 +1,6 @@
 import java.awt.*;
+import java.time.Duration;
+import java.time.Instant;
 
 public class AI {
     private TicTacToe game;
@@ -30,7 +32,6 @@ public class AI {
 
     /** Makes the Ai move using minimax algorithm (need to be AI's turn)*/
     public void aiMove() {
-
         int bestScore = Integer.MIN_VALUE;
         int bestMove = 0;
 
@@ -42,7 +43,7 @@ public class AI {
             if (game.buttons[i].getText().equals("")) {
                 // Make the move
                 game.buttons[i].setText(game.getTurn().getAbbreviation());
-                int score = minimax(0, false);
+                int score = minimax(0, Integer.MIN_VALUE, Integer.MAX_VALUE,  false);
                 game.setTurn(Player.AI);
 
                 // cancelling the previous move to make an empty board
@@ -57,6 +58,7 @@ public class AI {
         }
         // making the bestMove found
         game.buttons[bestMove].setText(Player.AI.getAbbreviation());
+
 
         // checking for the win
         if (game.win()[0] == 1) {
@@ -82,11 +84,12 @@ public class AI {
                 game.mainText.setText(game.getTurn().getAbbreviation() + " Turns");
             }
         }
+
     }
 
 
     /** minimax algorithm*/
-    private int minimax(int depth, boolean maximizingPlayer) {
+    private int minimax(int depth, int alpha, int beta, boolean maximizingPlayer ) {
 
 
         // Condition to stop the recursion (if someone won or if it's tie
@@ -113,11 +116,14 @@ public class AI {
                     game.buttons[i].setText(game.getTurn().getAbbreviation());
 
                     // then we make a recursive call to minimax
-                    int score = minimax(depth + 1, false);
+                    int score = minimax(depth + 1, alpha, beta, false);
                     // after going through everything we put back the button to reset the board
                     game.buttons[i].setText("");
                     // and we get the maximum score
                     maxScore = Math.max(maxScore, score);
+                    alpha = Math.max(alpha, score);
+                    if(beta <= alpha)
+                            break;
 
                 }
 
@@ -136,11 +142,13 @@ public class AI {
                     game.setTurn(opponent);
                     game.buttons[i].setText(game.getTurn().getAbbreviation());
 
-                    int score = minimax(depth + 1, true);
+                    int score = minimax(depth + 1, alpha, beta, true);
                     game.buttons[i].setText("");
 
-
                     minScore = Math.min(minScore, score);
+                    beta = Math.min(beta,score);
+                    if(beta <= alpha)
+                        break;
 
                 }
             }
